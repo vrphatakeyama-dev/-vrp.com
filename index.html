@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Reach Partners - 営業代行支援事業</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            color: #333;
+            line-height: 1.8;
+            background: #fff;
+        }
+
+        /* ヘッダー */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0047AB;
+            letter-spacing: 1px;
+        }
+
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #0047AB;
+            transition: all 0.3s;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* サイドメニュー */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(135deg, #0047AB 0%, #003580 100%);
+            padding: 100px 50px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .side-menu nav ul {
+            list-style: none;
+        }
+
+        .side-menu nav ul li {
+            margin-bottom: 30px;
+        }
+
+        .side-menu nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .side-menu nav ul li a:hover {
+            border-bottom: 2px solid #fff;
+            padding-left: 10px;
+        }
+
+        /* メインビジュアル */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #0047AB 0%, #003580 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+
+        .hero .tagline {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .hero .mission {
+            font-size: 18px;
+            margin-top: 40px;
+            opacity: 0.9;
+        }
+
+        /* セクション共通 */
+        section {
+            padding: 120px 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #0047AB;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 60px;
+            letter-spacing: 1px;
+        }
+
+        /* 会社概要 */
+        #about {
+            background: #f8f9fa;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .about-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .about-card h3 {
+            color: #0047AB;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .about-card p, .about-card ul {
+            color: #555;
+            line-height: 2;
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .about-card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .about-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* サービス */
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #0047AB;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 71, 171, 0.2);
+        }
+
+        .service-card h3 {
+            color: #0047AB;
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* 強み */
+        .strength-section {
+            background: linear-gradient(135deg, #0047AB 0%, #003580 100%);
+            color: #fff;
+            text-align: center;
+            padding: 80px 50px;
+        }
+
+        .strength-section .section-title {
+            color: #fff;
+        }
+
+        .strength-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 2.2;
+        }
+
+        /* 実績 */
+        #achievements {
+            background: #f8f9fa;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .achievement-item {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 71, 171, 0.15);
+        }
+
+        .achievement-item h4 {
+            color: #0047AB;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .achievement-item p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* お問い合わせ */
+        #contact {
+            background: #fff;
+        }
+
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            padding: 50px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #0047AB;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0047AB;
+        }
+
+        .form-group textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #0047AB 0%, #003580 100%);
+            color: #fff;
+            padding: 18px 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 71, 171, 0.3);
+        }
+
+        /* フッター */
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero .tagline {
+                font-size: 20px;
+            }
+
+            .about-grid,
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            section {
+                padding: 80px 20px;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            .side-menu {
+                width: 100%;
+                right: -100%;
+                padding: 100px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="logo">Vision Reach Partners</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- サイドメニュー -->
+    <div class="side-menu" id="sideMenu">
+        <nav>
+            <ul>
+                <li><a href="#home" onclick="closeMenu()">ホーム</a></li>
+                <li><a href="#about" onclick="closeMenu()">会社概要</a></li>
+                <li><a href="#services" onclick="closeMenu()">サービス概要</a></li>
+                <li><a href="#achievements" onclick="closeMenu()">支援実績</a></li>
+                <li><a href="#contact" onclick="closeMenu()">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- メインビジュアル -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Vision Reach Partners</h1>
+            <p class="tagline">社長の思いを売上に変える魂の営業</p>
+            <p class="mission">志ある社長のビジョンに向けて伴走するパートナーで在り続ける</p>
+        </div>
+    </section>
+
+    <!-- 会社概要 -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">会社概要</h2>
+            <p class="section-subtitle">Company Profile</p>
+            
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>基本情報</h3>
+                    <ul>
+                        <li><strong>屋号：</strong>Vision Reach Partners</li>
+                        <li><strong>代表者：</strong>畠山 駿一</li>
+                        <li><strong>設立：</strong>2024年10月</li>
+                        <li><strong>拠点：</strong>東京都、北海道</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h3>経営理念・志</h3>
+                    <p><strong>経営理念</strong><br>
+                    志ある社長のビジョンに向けて伴走するパートナーで在り続ける。</p>
+                    <p style="margin-top: 20px;"><strong>志</strong><br>
+                    夢・志ある人が自己実現できる日本を次の世代へ受け継いでいく。</p>
+                    <p style="margin-top: 20px;"><strong>真使命</strong><br>
+                    人々を希望に燃えさせることで幸せにする</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 強み -->
+    <div class="strength-section">
+        <div class="container">
+            <h2 class="section-title">当社の強み</h2>
+            <div class="strength-content">
+                <p>「トップ営業の現場実績」と「理念から逆算した戦略設計力」を掛け合わせた、ベンチャー・スタートアップ特化のハイブリッド型営業支援。</p>
+                <p style="margin-top: 30px;">クライアントの中長期的なビジョンや価値観を起点に、営業戦略をゼロから設計。初期は実働でテレアポ・商談を代行し、失注・断りのパターンを可視化・分析。再現性あるマニュアルと育成体制を構築し、「属人化しない、理念に根差した営業組織」を実現。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- サービス -->
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">サービス概要</h2>
+            <p class="section-subtitle">Our Services</p>
+            
+            <div class="service-cards">
+                <div class="service-card">
+                    <h3>営業代行及び支援事業</h3>
+                    <p>トップ営業の実績を活かし、テレアポから商談まで実働で代行。失注パターンを分析し、再現性の高い営業プロセスを構築します。</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>20代特化人材紹介事業</h3>
+                    <p>新卒・中途の若手人材に特化した人材紹介サービス。志ある若手と成長企業をマッチングし、双方の成長を支援します。</p>
+                </div>
+
+                <div class="service-card">
+                    <h3>営業パーソン教育事業</h3>
+                    <p>理念に根差した営業組織づくりをサポート。属人化しない営業体制の構築と、次世代の営業パーソン育成を実現します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 支援実績 -->
+    <section id="achievements">
+        <div class="container">
+            <h2 class="section-title">支援実績</h2>
+            <p class="section-subtitle">Achievements</p>
+            
+            <div class="achievements-grid">
+                <div class="achievement-item">
+                    <h4>チャットブースト</h4>
+                    <p>公式LINEマーケティング支援</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>楽々清算</h4>
+                    <p>会計・経理システム</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>TOKIUM</h4>
+                    <p>会計・経理システム</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>type / 女の転職type</h4>
+                    <p>求人広告</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>クラウドワークス</h4>
+                    <p>DXコンサルティング</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>Ligla</h4>
+                    <p>公式LINEマーケティング支援</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>東京マンダリンアワード</h4>
+                    <p>中国SNS運用支援</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>Socket</h4>
+                    <p>議事録作成AI</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>Revengers</h4>
+                    <p>非大卒営業職特化人材紹介</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>ロボカル</h4>
+                    <p>FA特化人材紹介</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>デルタマーケティング</h4>
+                    <p>Indeed代理店</p>
+                </div>
+                <div class="achievement-item">
+                    <h4>Progate</h4>
+                    <p>新卒エンジニア人材紹介</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせ -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">お問い合わせ</h2>
+            <p class="section-subtitle">Contact Us</p>
+            
+            <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label>お名前 *</label>
+                    <input type="text" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>会社名</label>
+                    <input type="text" name="company">
+                </div>
+                
+                <div class="form-group">
+                    <label>メールアドレス *</label>
+                    <input type="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>電話番号</label>
+                    <input type="tel" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label>お問い合わせ内容 *</label>
+                    <textarea name="message" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">送信する</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2024 Vision Reach Partners. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('sideMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+        }
+
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // フォーム送信処理
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const data = {
+                name: formData.get('name'),
+                company: formData.get('company'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                message: formData.get('message')
+            };
+
+            try {
+                const response = await fetch('https://formspree.io/f/xanyljgl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'vrp.hatakeyama@gmail.com',
+                        subject: `【VRP】お問い合わせ - ${data.name}様`,
+                        message: `
+お名前: ${data.name}
+会社名: ${data.company || '未入力'}
+メールアドレス: ${data.email}
+電話番号: ${data.phone || '未入力'}
+
+【お問い合わせ内容】
+${data.message}
+                        `.trim()
+                    })
+                });
+
+                if (response.ok) {
+                    alert('お問い合わせありがとうございます。\n担当者より折り返しご連絡いたします。');
+                    form.reset();
+                } else {
+                    alert('送信に失敗しました。お手数ですが、直接 vrp.hatakeyama@gmail.com までご連絡ください。');
+                }
+            } catch (error) {
+                alert('送信に失敗しました。お手数ですが、直接 vrp.hatakeyama@gmail.com までご連絡ください。');
+            }
+        }
+    </script>
+</body>
+</html>
